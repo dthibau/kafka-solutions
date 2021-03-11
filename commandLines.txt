@@ -16,3 +16,7 @@ Dans une autre fenêtre :
 ./kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
 
 ./kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group console-consumer-34569
+
+
+./kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 2 --partitions 3 --topic position
+
