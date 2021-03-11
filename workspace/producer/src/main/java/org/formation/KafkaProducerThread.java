@@ -87,7 +87,7 @@ public class KafkaProducerThread implements Runnable {
 	private void _initProducer() {
 		Properties kafkaProps = new Properties();
 		kafkaProps.put("bootstrap.servers",
-		"localhost:9092,localhost:9093");
+		"localhost:9094,localhost:9093");
 		kafkaProps.put("key.serializer",
 		"org.apache.kafka.common.serialization.StringSerializer");
 		kafkaProps.put("value.serializer",
