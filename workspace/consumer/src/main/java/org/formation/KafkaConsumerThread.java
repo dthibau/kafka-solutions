@@ -7,7 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+<<<<<<< HEAD
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+=======
+>>>>>>> Atelier 3
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -41,6 +44,7 @@ public class KafkaConsumerThread implements Runnable {
 					System.out.println(
 							"Partition " + record.partition() + " Offset :" + record.offset() + " - Key:" + record.key() + " timestamp :" + new Date(record.timestamp()));
 
+
 					int updatedCount = 1;
 					if (updateMap.containsKey(record.key())) {
 						updatedCount = updateMap.get(record.key()) + 1;
@@ -62,6 +66,7 @@ public class KafkaConsumerThread implements Runnable {
 		kafkaProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.formation.model.JsonDeserializer");
 		kafkaProps.put(ConsumerConfig.GROUP_ID_CONFIG, "position-consumer");
 		kafkaProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
 
 
 		consumer = new KafkaConsumer<String, Courier>(kafkaProps);
