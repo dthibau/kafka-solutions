@@ -21,6 +21,7 @@ public class KafkaConsumerApplication {
 		}
 
 		System.out.println("Starting with : "+nbThreads);
+
 		ExecutorService executorService = Executors.newFixedThreadPool(nbThreads);
 		
 		long top = System.currentTimeMillis();
