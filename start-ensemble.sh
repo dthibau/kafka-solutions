@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export ZK_HOME=/home/dthibau/Formations/Kafka/MyWork/apache-zookeeper-3.5.7-bin/
+export ZK_HOME=/home/dthibau/Formations/Kafka/MyWork/apache-zookeeper-3.6.3-bin/
 export ZK_ENSEMBLE=/home/dthibau/Formations/Kafka/github/solutions/zookeeper-ensemble
 
 
