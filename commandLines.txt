@@ -1,0 +1,18 @@
+./kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 2 --partitions 5 --topic testing
+
+./kafka-topics.sh --list --bootstrap-server localhost:9092
+
+./kafka-console-producer.sh --bootstrap-server localhost:9092 --topic testing --property "parse.key=true" --property "key.separator=:"
+
+./kafka-topics.sh --describe --bootstrap-server localhost:9092 --topic testing
+
+./kafka-log-dirs.sh  --bootstrap-server localhost:9092 --describe
+
+./kafka-metadata-quorum.sh --bootstrap-server localhost:9092 describe --status
+
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic testing --from-beginning
+
+Dans une autre fenêtre :
+./kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
+
+./kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group console-consumer-34569
