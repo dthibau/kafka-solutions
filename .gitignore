@@ -1,6 +1,7 @@
 #ZooKeeper
 **/data/version*/
 *log*
+!workspace/check-logs
 *.pid
 
 *.bin
