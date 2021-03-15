@@ -101,6 +101,10 @@ public class KafkaProducerThread implements Runnable {
 		"org.apache.kafka.common.serialization.StringSerializer");
 		kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
 		"org.formation.model.JsonSerializer");
+		kafkaProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG,true);
+		kafkaProps.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION,4);
+		kafkaProps.put(ProducerConfig.RETRIES_CONFIG,Integer.MAX_VALUE);
+		kafkaProps.put(ProducerConfig.ACKS_CONFIG,0);
 		if ( this.ackMode == AckMode.ALL )
 			kafkaProps.put(ProducerConfig.ACKS_CONFIG, "all");
 		
