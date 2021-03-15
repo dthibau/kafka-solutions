@@ -52,7 +52,7 @@ public class KafkaProducerApplication {
 		executorService.shutdown();
 
 		try {
-			System.out.println(executorService.awaitTermination(2, TimeUnit.MINUTES));
+			System.out.println(executorService.awaitTermination(2, TimeUnit.HOURS));
 		} catch (InterruptedException e) {
 			System.err.println("INTERRUPTED");
 		}
