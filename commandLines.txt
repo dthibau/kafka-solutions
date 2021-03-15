@@ -15,8 +15,14 @@ Dans une autre fenêtre :
 
 ./kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group console-consumer-34569
 
-
 ./kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 2 --partitions 3 --topic position
+
+-- API Registry
+./schema-registry-start ../etc/schema-registry/schema-registry.properties
+
+curl -X DELETE http://localhost:8081/subjects/position-value
+
+
 ------
 ./kafka-run-class.sh kafka.tools.DumpLogSegments --files ../../../github/solutions/kafka-cluster/broker-1/kafka-logs/testing-4/00000000000000000000.log 
 
@@ -26,7 +32,14 @@ Dans une autre fenêtre :
 
 ./kafka-verifiable-producer.sh --broker-list localhost:9092,localhost:9093,localhost:9094 --topic verify --repeating-keys 100
 
--- API Registry
-./schema-registry-start ../etc/schema-registry/schema-registry.properties
 
-curl -X DELETE http://localhost:8081/subjects/position-value
+--------
+./kafka-reassign-partitions.sh --zookeeper localhost:2181 --broker-list "1,2,3,4" --topics-to-move-json-file ../../../github/solutions/topics-to-move.json --generate
+
+./kafka-reassign-partitions.sh --zookeeper localhost:2181 --reassignment-json-file ../../../github/solutions/expand-cluster-reassignment.json --execute
+
+./kafka-reassign-partitions.sh --zookeeper localhost:2181 --reassignment-json-file ../../../github/solutions/expand-cluster-reassignment.json --verify
+
+./kafka-configs.sh --zookeeper localhost:2181 --entity-type topics --entity-name position --alter --add-config retention.bytes=512000
+
+
