@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 public class KafkaProducerThread implements Runnable {
 
 	public static String TOPIC ="position";
+	public static int BATCH=10;
 	KafkaProducer<String,Courier> producer;
 	private long nbMessages,sleep;
 	private SendMode sendMode;
@@ -39,9 +40,15 @@ public class KafkaProducerThread implements Runnable {
 
 	@Override
 	public void run() {
-		
+		int batch=0;
+		producer.initTransactions();
+		// Send ten by ten
 		for (int i =0; i< nbMessages; i++) {
 			courier.move();
+			if ( i%BATCH == 0 ) {
+				producer.beginTransaction();
+				batch=0;
+			}
 			ProducerRecord<String, Courier> producerRecord = new ProducerRecord<String, Courier>(TOPIC, courier.getId(), courier);
 
 			switch (sendMode) {
@@ -71,7 +78,12 @@ public class KafkaProducerThread implements Runnable {
 			} catch (InterruptedException e) {
 				System.err.println("INTERRUPTED");
 			}
-			courier.move();
+
+			batch++;
+			if ( batch == BATCH ) {
+				System.out.println("Committing messages");
+				producer.commitTransaction();
+			}
 		}
 		producer.flush();
 		producer.close();
@@ -97,11 +109,14 @@ public class KafkaProducerThread implements Runnable {
 	
 	private void _initProducer() {
 		Properties kafkaProps = new Properties();
-		kafkaProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-		"localhost:19092,localhost:19093");
-		kafkaProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-		"org.apache.kafka.common.serialization.StringSerializer");
-		kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,"org.formation.model.JsonSerializer");
+		kafkaProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,KafkaProducerApplication.props.get(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG));
+		kafkaProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,KafkaProducerApplication.props.get(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG));
+		kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaProducerApplication.props.get(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG));
+		kafkaProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG,true);
+		kafkaProps.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION,4);
+		kafkaProps.put(ProducerConfig.RETRIES_CONFIG,Integer.MAX_VALUE);
+		kafkaProps.put(ProducerConfig.ACKS_CONFIG,"all");
+		kafkaProps.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, KafkaProducerApplication.props.get(ProducerConfig.TRANSACTIONAL_ID_CONFIG) + courier.getId());
 
 
 		producer = new KafkaProducer<String, Courier>(kafkaProps);

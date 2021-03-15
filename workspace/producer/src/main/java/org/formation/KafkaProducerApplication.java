@@ -1,6 +1,8 @@
 package org.formation;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -8,8 +10,12 @@ import java.util.concurrent.TimeUnit;
 import org.formation.model.SendMode;
 
 public class KafkaProducerApplication {
+	static Properties props;
 
-	public static void main(String[] args) throws URISyntaxException {
+	public static void main(String[] args) throws URISyntaxException, IOException {
+
+		props = new Properties();
+		props.load(KafkaProducerApplication.class.getClassLoader().getResourceAsStream("producer.properties"));
 
 		int nbThreads = 0;
 		long nbMessages = 0;
@@ -28,6 +34,7 @@ public class KafkaProducerApplication {
 			} else {
 				sendMode = SendMode.ASYNCHRONOUS;
 			}
+
 		} catch (Exception e) {
 			System.err.println("Usage is <run> <nbThreads> <nbMessages> <sleep> <0|1|2>");
 			System.exit(1);
