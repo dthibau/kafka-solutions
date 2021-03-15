@@ -1,6 +1,8 @@
 package org.formation;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -8,12 +10,18 @@ import java.util.concurrent.TimeUnit;
 import org.formation.model.SendMode;
 
 public class KafkaProducerApplication {
+	
+	static Properties props;
 
-	public static void main(String[] args) throws URISyntaxException {
+	public static void main(String[] args) throws URISyntaxException, IOException {
 
+		props = new Properties();
+		props.load(KafkaProducerApplication.class.getClassLoader().getResourceAsStream("producer.properties"));
+		
 		int nbThreads = 0;
 		long nbMessages = 0;
 		int sleep = 1000;
+		String ackMode = "0";
 		SendMode sendMode = SendMode.FIRE_AND_FORGET;
 
 		try {
@@ -28,8 +36,10 @@ public class KafkaProducerApplication {
 			} else {
 				sendMode = SendMode.ASYNCHRONOUS;
 			}
+			ackMode = args[4];
+			
 		} catch (Exception e) {
-			System.err.println("Usage is <run> <nbThreads> <nbMessages> <sleep> <0|1|2>");
+			System.err.println("Usage is <run> <nbThreads> <nbMessages> <sleep> <0|1|2> <0|1|all>");
 			System.exit(1);
 		}
 
@@ -38,7 +48,7 @@ public class KafkaProducerApplication {
 		long top = System.currentTimeMillis();
 
 		for (int i = 0; i < nbThreads; i++) {
-			Runnable r = new KafkaProducerThread("" + i, nbMessages, sleep, sendMode);
+			Runnable r = new KafkaProducerThread("" + i, nbMessages, sleep, sendMode, ackMode);
 			executorService.execute(r);
 		}
 

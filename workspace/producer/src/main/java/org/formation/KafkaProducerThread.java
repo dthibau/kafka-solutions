@@ -17,14 +17,16 @@ public class KafkaProducerThread implements Runnable {
 	KafkaProducer<String,Courier> producer;
 	private long nbMessages,sleep;
 	private SendMode sendMode;
+	private String ackMode;
 	private ProducerCallback callback = new ProducerCallback();
 	
 	private Courier courier;
 	
-	public KafkaProducerThread(String id, long nbMessages, long sleep, SendMode sendMode) {
+	public KafkaProducerThread(String id, long nbMessages, long sleep, SendMode sendMode, String ackMode) {
 		this.nbMessages = nbMessages;
 		this.sleep = sleep;
 		this.sendMode = sendMode;
+		this.ackMode = ackMode;
 		this.courier = new Courier(id, new Position(Math.random() + 45, Math.random() + 2));
 		
 		_initProducer();
@@ -89,11 +91,13 @@ public class KafkaProducerThread implements Runnable {
 	private void _initProducer() {
 		Properties kafkaProps = new Properties();
 		kafkaProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-		"localhost:19092,localhost:19093");
+		KafkaProducerApplication.props.get(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG));
 		kafkaProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-		"org.apache.kafka.common.serialization.StringSerializer");
+				KafkaProducerApplication.props.get(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG));
 		kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-		"org.formation.model.JsonSerializer");
+				KafkaProducerApplication.props.get(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG));
+		kafkaProps.put(ProducerConfig.ACKS_CONFIG,
+				ackMode);
 
 		producer = new KafkaProducer<String, Courier>(kafkaProps);
 	}
