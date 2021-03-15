@@ -36,10 +36,9 @@ public class KafkaProducerApplication {
 			} else {
 				sendMode = SendMode.ASYNCHRONOUS;
 			}
-			ackMode = args[4];
 			
 		} catch (Exception e) {
-			System.err.println("Usage is <run> <nbThreads> <nbMessages> <sleep> <0|1|2> <0|1|all>");
+			System.err.println("Usage is <run> <nbThreads> <nbMessages> <sleep> <0|1|2>");
 			System.exit(1);
 		}
 
@@ -55,7 +54,7 @@ public class KafkaProducerApplication {
 		executorService.shutdown();
 
 		try {
-			System.out.println(executorService.awaitTermination(nbMessages*sleep + 1000, TimeUnit.MILLISECONDS));
+			System.out.println(executorService.awaitTermination(2, TimeUnit.HOURS));
 		} catch (InterruptedException e) {
 			System.err.println("INTERRUPTED");
 		}

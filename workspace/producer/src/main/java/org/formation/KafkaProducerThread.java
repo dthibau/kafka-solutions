@@ -14,6 +14,7 @@ import org.formation.model.SendMode;
 public class KafkaProducerThread implements Runnable {
 
 	public static String TOPIC ="position";
+	public static int BATCH=10;
 	KafkaProducer<String,Courier> producer;
 	private long nbMessages,sleep;
 	private SendMode sendMode;
@@ -35,9 +36,15 @@ public class KafkaProducerThread implements Runnable {
 
 	@Override
 	public void run() {
-		
+		int batch=0;
+		producer.initTransactions();
+		// Send ten by ten
 		for (int i =0; i< nbMessages; i++) {
 			
+			if ( i%BATCH == 0 ) {
+				producer.beginTransaction();
+				batch=0;
+			}
 			ProducerRecord<String, Courier> producerRecord = new ProducerRecord<String, Courier>(TOPIC, courier.getId(), courier);
 			switch (sendMode) {
 			case FIRE_AND_FORGET:
@@ -67,6 +74,11 @@ public class KafkaProducerThread implements Runnable {
 				System.err.println("INTERRUPTED");
 			}
 			courier.move();
+			batch++;
+			if ( batch == BATCH ) {
+				System.out.println("Committing messages");
+				producer.commitTransaction();
+			}
 		}
 		
 	}
@@ -96,8 +108,12 @@ public class KafkaProducerThread implements Runnable {
 				KafkaProducerApplication.props.get(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG));
 		kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
 				KafkaProducerApplication.props.get(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG));
-		kafkaProps.put(ProducerConfig.ACKS_CONFIG,
-				ackMode);
+		kafkaProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG,true);
+		kafkaProps.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION,4);
+		kafkaProps.put(ProducerConfig.RETRIES_CONFIG,Integer.MAX_VALUE);
+		kafkaProps.put(ProducerConfig.ACKS_CONFIG,"all");
+		kafkaProps.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, KafkaProducerApplication.props.get(ProducerConfig.TRANSACTIONAL_ID_CONFIG));
+
 
 		producer = new KafkaProducer<String, Courier>(kafkaProps);
 	}
