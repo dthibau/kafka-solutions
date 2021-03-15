@@ -34,7 +34,7 @@ public class KafkaConsumerApplication {
 		executorService.shutdown();
 
 		try {
-			System.out.println(executorService.awaitTermination(30, TimeUnit.MINUTES));
+			System.out.println(executorService.awaitTermination(5, TimeUnit.MINUTES));
 		} catch (InterruptedException e) {
 			System.err.println("INTERRUPTED");
 		}

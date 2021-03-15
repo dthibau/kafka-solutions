@@ -17,6 +17,14 @@ Dans une autre fenêtre :
 
 
 ./kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 2 --partitions 3 --topic position
+------
+./kafka-run-class.sh kafka.tools.DumpLogSegments --files ../../../github/solutions/kafka-cluster/broker-1/kafka-logs/testing-4/00000000000000000000.log 
+
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 2 --partitions 3 --topic verify
+
+./kafka-verifiable-consumer.sh --broker-list localhost:9092,localhost:9093,localhost:9094 --topic verify --group-id group --group-instance-id 1 --max-messages 100000 > consumer1.log
+
+./kafka-verifiable-producer.sh --broker-list localhost:9092,localhost:9093,localhost:9094 --topic verify --repeating-keys 100
 
 -- API Registry
 ./schema-registry-start ../etc/schema-registry/schema-registry.properties
