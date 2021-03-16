@@ -104,9 +104,12 @@ public class KafkaProducerThread implements Runnable {
 		kafkaProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG,true);
 		kafkaProps.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION,4);
 		kafkaProps.put(ProducerConfig.RETRIES_CONFIG,Integer.MAX_VALUE);
-		kafkaProps.put(ProducerConfig.ACKS_CONFIG,0);
+		kafkaProps.put(ProducerConfig.ACKS_CONFIG,"0");
 		if ( this.ackMode == AckMode.ALL )
 			kafkaProps.put(ProducerConfig.ACKS_CONFIG, "all");
+		kafkaProps.put("security.protocol","SSL");
+		kafkaProps.put("ssl.truststore.location","/home/dthibau/Formations/Kafka/github/solutions/ssl/client.truststore.jks");
+		kafkaProps.put("ssl.truststore.password","secret");
 		
 
 		producer = new KafkaProducer<String, Courier>(kafkaProps);
