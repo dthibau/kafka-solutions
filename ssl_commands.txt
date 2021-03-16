@@ -1,0 +1,20 @@
+#  Créer son propre CA (Certificate Authority)
+openssl req -new -newkey rsa:4096 -days 365 -x509 -subj "/CN=localhost" -keyout ca-key -out ca-cert -nodes
+# Générer une paire clé publique/privé pour chaque serveur
+keytool -keystore server.keystore.jks -alias localhost -validity 365 -genkey -keyalg RSA -storetype pkcs12
+# Create Certificate signed request (CSR):
+keytool -keystore server.keystore.jks -certreq -file cert-file -storepass secret -keypass secret -alias localhost
+# Get CSR Signed with the CA
+openssl x509 -req -CA ca-cert -CAkey ca-key -in cert-file -out cert-file-signed -days 365 -CAcreateserial -passin pass:secret
+# Import CA certificate in KeyStore
+keytool -keystore server.keystore.jks -alias CARoot -import -file ca-cert -storepass secret -keypass secret -noprompt
+# Import Signed CSR In KeyStore
+keytool -keystore server.keystore.jks -import -file cert-file-signed -storepass secret -keypass secret -noprompt -alias localhost
+# Import CA certificate In TrustStore
+keytool -keystore server.truststore.jks -alias CARoot -import -file ca-cert -storepass secret -keypass secret -noprompt
+
+
+
+#Import CA in client
+keytool -keystore client.truststore.jks -alias CARoot -import -file ca-cert -storepass secret -keypass secret -noprompt
+
