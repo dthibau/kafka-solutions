@@ -10,7 +10,7 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import org.formation.model.Courier;
 import org.formation.model.Position;
 
-import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
+
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 
 public class KafkaProducerThread implements Runnable {
