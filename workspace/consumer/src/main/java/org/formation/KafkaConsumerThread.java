@@ -39,7 +39,7 @@ public class KafkaConsumerThread implements Runnable {
 				ConsumerRecords<String, Courier> records = consumer.poll(Duration.ofMillis(sleep));
 				for (ConsumerRecord<String, Courier> record : records) {
 					System.out.println(
-							"Offset :" + record.offset() + " - Key:" + record.key() + " timestamp :" + new Date(record.timestamp()));
+							"Partition " + record.partition() + " Offset :" + record.offset() + " - Key:" + record.key() + " timestamp :" + new Date(record.timestamp()));
 
 					int updatedCount = 1;
 					if (updateMap.containsKey(record.key())) {
@@ -62,6 +62,7 @@ public class KafkaConsumerThread implements Runnable {
 		kafkaProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.formation.model.JsonDeserializer");
 		kafkaProps.put(ConsumerConfig.GROUP_ID_CONFIG, "position-consumer");
 		kafkaProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
 
 		consumer = new KafkaConsumer<String, Courier>(kafkaProps);
 		consumer.subscribe(Collections.singletonList(TOPIC));
