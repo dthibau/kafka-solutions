@@ -18,3 +18,7 @@ Dans une autre fenêtre :
 
 ./kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 2 --partitions 3 --topic position
 
+-- API Registry
+./schema-registry-start ../etc/schema-registry/schema-registry.properties
+
+curl -X DELETE http://localhost:8081/subjects/position-value

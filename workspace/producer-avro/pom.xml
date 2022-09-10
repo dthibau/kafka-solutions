@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.formation</groupId>
+	<artifactId>producer-avro</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>io.confluent</groupId>
+			<artifactId>kafka-schema-registry</artifactId>
+			<version>7.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.confluent</groupId>
+			<artifactId>kafka-avro-serializer</artifactId>
+			<version>7.2.1</version>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>io.confluent</groupId> -->
+<!-- 			<artifactId>kafka-streams-avro-serde</artifactId> -->
+<!-- 			<version>3.3.1</version> -->
+<!-- 		</dependency> -->
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>confluent</id>
+			<url>https://packages.confluent.io/maven/</url>
+		</repository>
+	</repositories>
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro-maven-plugin</artifactId>
+            <version>1.8.2</version>
+            <executions>
+                <execution>
+                    <id>schemas</id>
+                    <phase>generate-sources</phase>
+                    <goals>
+                        <goal>schema</goal>
+                        <goal>protocol</goal>
+                        <goal>idl-protocol</goal>
+                    </goals>
+                    <configuration>                        
+                        <sourceDirectory>${project.basedir}/src/main/resources/</sourceDirectory>
+                        <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+</project>
