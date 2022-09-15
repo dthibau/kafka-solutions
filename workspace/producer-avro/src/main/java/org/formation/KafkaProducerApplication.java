@@ -8,9 +8,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.avro.Schema;
-import org.formation.model.AckMode;
-import org.formation.model.SendMode;
 
+import io.confluent.kafka.schemaregistry.avro.AvroSchema;
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 
@@ -24,8 +23,6 @@ public class KafkaProducerApplication {
 		long nbMessages = 0;
 		int sleep = 1000;
 		SendMode sendMode = SendMode.FIRE_AND_FORGET;
-		AckMode ackMode =  AckMode.ZER0;
-;
 
 		try {
 			nbThreads = Integer.parseInt(args[0]);
@@ -39,12 +36,8 @@ public class KafkaProducerApplication {
 			} else {
 				sendMode = SendMode.ASYNCHRONOUS;
 			}
-			if (args[4].equalsIgnoreCase("all") ) {
-				ackMode = AckMode.ALL;
-			} 
-
 		} catch (Exception e) {
-			System.err.println("Usage is <run> <nbThreads> <nbMessages> <sleep> <0|1|2> <0|all>");
+			System.err.println("Usage is <run> <nbThreads> <nbMessages> <sleep> <0|1|2>");
 			System.exit(1);
 		}
 
@@ -54,21 +47,22 @@ public class KafkaProducerApplication {
 		long top = System.currentTimeMillis();
 
 		for (int i = 0; i < nbThreads; i++) {
-			Runnable r = new KafkaProducerThread("" + i, nbMessages, sleep, sendMode, ackMode);
+			Runnable r = new KafkaProducerThread("" + i, nbMessages, sleep, sendMode);
 			executorService.execute(r);
 		}
 
 		executorService.shutdown();
 
 		try {
-			System.out.println(executorService.awaitTermination(2, TimeUnit.HOURS));
+			System.out.println(executorService.awaitTermination(nbMessages*sleep + 1000, TimeUnit.MILLISECONDS));
 		} catch (InterruptedException e) {
 			System.err.println("INTERRUPTED");
 		}
 		System.out.println("Execution in "+ (System.currentTimeMillis()-top) + "ms");
 		System.exit(0);
 	}
-
+	
+	
 	private static void _initRegistry() throws IOException, RestClientException {
 
 		// avro schema avsc file path.
@@ -84,6 +78,6 @@ public class KafkaProducerApplication {
 
 		CachedSchemaRegistryClient client = new CachedSchemaRegistryClient(REGISTRY_URL, 20);
 
-		client.register(subject, avroSchema);
+		client.register(subject, new AvroSchema(avroSchema));
 	}
 }

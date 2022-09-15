@@ -1,4 +1,4 @@
-package org.formation.model;
+package org.formation;
 
 public enum SendMode {
 	FIRE_AND_FORGET,
