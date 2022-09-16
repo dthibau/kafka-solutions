@@ -42,4 +42,15 @@ curl -X DELETE http://localhost:8081/subjects/position-value
 
 ./kafka-configs.sh --zookeeper localhost:2181 --entity-type topics --entity-name position --alter --add-config retention.bytes=512000
 
+-- SSl
+./kafka-console-producer.sh --broker-list localhost:9192 --topic ssl --producer.config client-ssl.properties 
+
+--- SASL SCRAM
+./kafka-configs.sh --bootstrap-server localhost:9092 --alter --add-config 'SCRAM-SHA-512=[password='admin-secret']' --entity-type users --entity-name admin
+
+./kafka-configs.sh --bootstrap-server localhost:9092 --alter --add-config 'SCRAM-SHA-512=[password='secret']' --entity-type users --entity-name demouser
+
+./kafka-configs.sh --bootstrap-server localhost:9092 --describe --entity-type users --entity-name admin
+
+./kafka-acls.sh --authorizer-properties zookeeper.connect=localhost:2181 --add --allow-principal User:demouser --operation Create --operation Describe  --topic demo-topic
 
