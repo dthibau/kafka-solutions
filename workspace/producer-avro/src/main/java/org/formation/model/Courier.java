@@ -13,8 +13,8 @@ import org.apache.avro.message.SchemaStore;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class Courier extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 4863131900608571758L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Courier\",\"namespace\":\"org.formation.model\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"position\",\"type\":[{\"type\":\"record\",\"name\":\"Position\",\"fields\":[{\"name\":\"latitude\",\"type\":\"double\"},{\"name\":\"longitude\",\"type\":\"double\"}]}]}]}");
+  private static final long serialVersionUID = 44757945260951559L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Courier\",\"namespace\":\"org.formation.model\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"firstName\",\"type\":[\"string\",\"null\"]},{\"name\":\"position\",\"type\":[{\"type\":\"record\",\"name\":\"Position\",\"fields\":[{\"name\":\"latitude\",\"type\":\"double\"},{\"name\":\"longitude\",\"type\":\"double\"}]}]}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -52,6 +52,7 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
   }
 
   @Deprecated public java.lang.CharSequence id;
+  @Deprecated public java.lang.CharSequence firstName;
   @Deprecated public java.lang.Object position;
 
   /**
@@ -64,10 +65,12 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
   /**
    * All-args constructor.
    * @param id The new value for id
+   * @param firstName The new value for firstName
    * @param position The new value for position
    */
-  public Courier(java.lang.CharSequence id, java.lang.Object position) {
+  public Courier(java.lang.CharSequence id, java.lang.CharSequence firstName, java.lang.Object position) {
     this.id = id;
+    this.firstName = firstName;
     this.position = position;
   }
 
@@ -76,7 +79,8 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return id;
-    case 1: return position;
+    case 1: return firstName;
+    case 2: return position;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -86,7 +90,8 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: id = (java.lang.CharSequence)value$; break;
-    case 1: position = (java.lang.Object)value$; break;
+    case 1: firstName = (java.lang.CharSequence)value$; break;
+    case 2: position = (java.lang.Object)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -105,6 +110,22 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
    */
   public void setId(java.lang.CharSequence value) {
     this.id = value;
+  }
+
+  /**
+   * Gets the value of the 'firstName' field.
+   * @return The value of the 'firstName' field.
+   */
+  public java.lang.CharSequence getFirstName() {
+    return firstName;
+  }
+
+  /**
+   * Sets the value of the 'firstName' field.
+   * @param value the value to set.
+   */
+  public void setFirstName(java.lang.CharSequence value) {
+    this.firstName = value;
   }
 
   /**
@@ -156,6 +177,7 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
     implements org.apache.avro.data.RecordBuilder<Courier> {
 
     private java.lang.CharSequence id;
+    private java.lang.CharSequence firstName;
     private java.lang.Object position;
 
     /** Creates a new Builder */
@@ -173,9 +195,13 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
         this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.position)) {
-        this.position = data().deepCopy(fields()[1].schema(), other.position);
+      if (isValidValue(fields()[1], other.firstName)) {
+        this.firstName = data().deepCopy(fields()[1].schema(), other.firstName);
         fieldSetFlags()[1] = true;
+      }
+      if (isValidValue(fields()[2], other.position)) {
+        this.position = data().deepCopy(fields()[2].schema(), other.position);
+        fieldSetFlags()[2] = true;
       }
     }
 
@@ -189,9 +215,13 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
         this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.position)) {
-        this.position = data().deepCopy(fields()[1].schema(), other.position);
+      if (isValidValue(fields()[1], other.firstName)) {
+        this.firstName = data().deepCopy(fields()[1].schema(), other.firstName);
         fieldSetFlags()[1] = true;
+      }
+      if (isValidValue(fields()[2], other.position)) {
+        this.position = data().deepCopy(fields()[2].schema(), other.position);
+        fieldSetFlags()[2] = true;
       }
     }
 
@@ -235,6 +265,45 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
     }
 
     /**
+      * Gets the value of the 'firstName' field.
+      * @return The value.
+      */
+    public java.lang.CharSequence getFirstName() {
+      return firstName;
+    }
+
+    /**
+      * Sets the value of the 'firstName' field.
+      * @param value The value of 'firstName'.
+      * @return This builder.
+      */
+    public org.formation.model.Courier.Builder setFirstName(java.lang.CharSequence value) {
+      validate(fields()[1], value);
+      this.firstName = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'firstName' field has been set.
+      * @return True if the 'firstName' field has been set, false otherwise.
+      */
+    public boolean hasFirstName() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'firstName' field.
+      * @return This builder.
+      */
+    public org.formation.model.Courier.Builder clearFirstName() {
+      firstName = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'position' field.
       * @return The value.
       */
@@ -248,9 +317,9 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return This builder.
       */
     public org.formation.model.Courier.Builder setPosition(java.lang.Object value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.position = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -259,7 +328,7 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return True if the 'position' field has been set, false otherwise.
       */
     public boolean hasPosition() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -269,7 +338,7 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
       */
     public org.formation.model.Courier.Builder clearPosition() {
       position = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -279,7 +348,8 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
       try {
         Courier record = new Courier();
         record.id = fieldSetFlags()[0] ? this.id : (java.lang.CharSequence) defaultValue(fields()[0]);
-        record.position = fieldSetFlags()[1] ? this.position : (java.lang.Object) defaultValue(fields()[1]);
+        record.firstName = fieldSetFlags()[1] ? this.firstName : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.position = fieldSetFlags()[2] ? this.position : (java.lang.Object) defaultValue(fields()[2]);
         return record;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
