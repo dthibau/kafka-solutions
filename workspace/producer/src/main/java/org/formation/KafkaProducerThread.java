@@ -71,6 +71,7 @@ public class KafkaProducerThread implements Runnable {
 			} catch (InterruptedException e) {
 				System.err.println("INTERRUPTED");
 			}
+			courier.move();
 		}
 		producer.flush();
 		producer.close();

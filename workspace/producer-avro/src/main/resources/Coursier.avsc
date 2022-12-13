@@ -8,6 +8,11 @@
         "type": "long"
     },
     {
+        "name": "firstName",
+        "type": ["string", "null"],
+        "default": "null" 
+    },
+    {
     	"name": "position",
     	"type": [
     		{

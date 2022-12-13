@@ -7,10 +7,10 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
-
-import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import org.formation.model.Coursier;
+import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import org.formation.model.Position;
+
 
 public class KafkaProducerThread implements Runnable {
 
@@ -26,8 +26,8 @@ public class KafkaProducerThread implements Runnable {
 		this.nbMessages = nbMessages;
 		this.sleep = sleep;
 		this.sendMode = sendMode;
-		this.coursier = new Coursier(id, new Position(Math.random() + 45, Math.random() + 2));
-		
+		this.coursier = new Coursier(id, "David", new Position(Math.random() + 45, Math.random() + 2));
+
 		_initProducer();
 		
 	}
