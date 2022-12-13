@@ -1,6 +1,7 @@
 package org.formation;
 
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -27,7 +28,7 @@ public class KafkaProducerThread implements Runnable {
 		this.nbMessages = nbMessages;
 		this.sleep = sleep;
 		this.sendMode = sendMode;
-		this.courier = new Courier(id, new Position(Math.random() + 45, Math.random() + 2));
+		this.courier = new Courier(id, UUID.randomUUID().toString(), new Position(Math.random() + 45, Math.random() + 2));
 		
 		_initProducer();
 		

@@ -49,7 +49,7 @@ public class KafkaProducerApplication {
 		} catch (InterruptedException e) {
 			System.err.println("INTERRUPTED");
 		}
-		System.out.println("Execution in "+ (System.currentTimeMillis()-top) + "ms");
+		System.out.println("Produced " + nbThreads*nbMessages + " messages in "+ (System.currentTimeMillis()-top) + "ms");
 		System.exit(0);
 	}
 
