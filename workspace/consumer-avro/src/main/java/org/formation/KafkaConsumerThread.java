@@ -13,6 +13,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
+import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
+
 public class KafkaConsumerThread implements Runnable {
 
 	public static String TOPIC = "avro-position";
@@ -38,15 +40,15 @@ public class KafkaConsumerThread implements Runnable {
 				// poll envoie le heartbeat, on bloque pdt 100ms pour récupérer les messages
 				ConsumerRecords<String, GenericRecord> records = consumer.poll(Duration.ofMillis(sleep));
 				for (ConsumerRecord<String, GenericRecord> record : records) {
-					System.out.println(
-							"Offset :" + record.offset() + " - Key:" + record.key() + " timestamp :" + new Date(record.timestamp()));
-					System.out.println("Value is " + record.value());
+//					System.out.println(
+//							"Offset :" + record.offset() + " - Key:" + record.key() + " timestamp :" + new Date(record.timestamp()));
+//					System.out.println("Value is " + record.value());
 					int updatedCount = 1;
 					if (updateMap.containsKey(record.key())) {
 						updatedCount = updateMap.get(record.key()) + 1;
 					}
 					updateMap.put(record.key(), updatedCount);
-//					System.out.println("Consommer " + id + " updateMap:" + updateMap);
+					System.out.println("Consommer " + id + " updateMap:" + updateMap);
 				}
 			}
 		} finally {
@@ -57,11 +59,11 @@ public class KafkaConsumerThread implements Runnable {
 
 	private void _initConsumer() {
 		Properties kafkaProps = new Properties();
-		kafkaProps.put("bootstrap.servers", "localhost:9092,localhost:9093");
-		kafkaProps.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+		kafkaProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092,localhost:9093");
+		kafkaProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
 		kafkaProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
-		kafkaProps.put("schema.registry.url", "http://localhost:8081");
-		kafkaProps.put("group.id", "avro-position-consumer");
+		kafkaProps.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
+		kafkaProps.put(ConsumerConfig.GROUP_ID_CONFIG, "avro-position-consumer");
 
 		kafkaProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
