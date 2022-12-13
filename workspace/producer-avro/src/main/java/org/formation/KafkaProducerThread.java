@@ -10,7 +10,7 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import org.formation.model.Courier;
 import org.formation.model.Position;
 
-import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
+import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 
 public class KafkaProducerThread implements Runnable {
 
@@ -94,7 +94,7 @@ public class KafkaProducerThread implements Runnable {
 		"org.apache.kafka.common.serialization.StringSerializer");
 		kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
 		"io.confluent.kafka.serializers.KafkaAvroSerializer");	
-		kafkaProps.put("schema.registry.url", KafkaProducerApplication.REGISTRY_URL);
+		kafkaProps.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, KafkaProducerApplication.REGISTRY_URL);
 
 		
 		producer = new KafkaProducer<String, Courier>(kafkaProps);
