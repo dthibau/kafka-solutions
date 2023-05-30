@@ -36,6 +36,7 @@ public class KafkaProducerApplication {
 			} else {
 				sendMode = SendMode.ASYNCHRONOUS;
 			}
+
 		} catch (Exception e) {
 			System.err.println("Usage is <run> <nbThreads> <nbMessages> <sleep> <0|1|2>");
 			System.exit(1);
@@ -79,5 +80,6 @@ public class KafkaProducerApplication {
 		CachedSchemaRegistryClient client = new CachedSchemaRegistryClient(REGISTRY_URL, 20);
 
 		client.register(subject, new AvroSchema(avroSchema));
+
 	}
 }
