@@ -4,6 +4,7 @@ import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.formation.model.Courier;
@@ -86,11 +87,11 @@ public class KafkaProducerThread implements Runnable {
 	
 	private void _initProducer() {
 		Properties kafkaProps = new Properties();
-		kafkaProps.put("bootstrap.servers",
-		"localhost:9092,localhost:9093");
-		kafkaProps.put("key.serializer",
+		kafkaProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+		"localhost:19092,localhost:19093");
+		kafkaProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
 		"org.apache.kafka.common.serialization.StringSerializer");
-		kafkaProps.put("value.serializer",
+		kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
 		"org.formation.model.JsonSerializer");
 
 		producer = new KafkaProducer<String, Courier>(kafkaProps);
