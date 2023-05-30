@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -56,10 +57,11 @@ public class KafkaConsumerThread implements Runnable {
 
 	private void _initConsumer() {
 		Properties kafkaProps = new Properties();
-		kafkaProps.put("bootstrap.servers", "localhost:9092,localhost:9093");
-		kafkaProps.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-		kafkaProps.put("value.deserializer", "org.formation.model.JsonDeserializer");
-		kafkaProps.put("group.id", "position-consumer");
+		kafkaProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092,localhost:19093");
+		kafkaProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+		kafkaProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.formation.model.JsonDeserializer");
+		kafkaProps.put(ConsumerConfig.GROUP_ID_CONFIG, "position-consumer");
+		kafkaProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
 		consumer = new KafkaConsumer<String, Courier>(kafkaProps);
 		consumer.subscribe(Collections.singletonList(TOPIC));
