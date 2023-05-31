@@ -69,6 +69,7 @@ public class KafkaConsumerThread implements Runnable, ConsumerRebalanceListener 
 		kafkaProps.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 		kafkaProps.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
 		kafkaProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, KafkaConsumerApplication.props.get(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG));
+		kafkaProps.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed");
 
 		consumer = new KafkaConsumer<String, Courier>(kafkaProps);
 		consumer.subscribe(Collections.singletonList(TOPIC),this);
