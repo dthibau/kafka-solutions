@@ -1,13 +1,21 @@
 package org.formation;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class KafkaConsumerApplication {
 
-	public static void main(String[] args) throws URISyntaxException, ClassNotFoundException {
+	static Properties props;
+
+	public static void main(String[] args) throws URISyntaxException, ClassNotFoundException, IOException {
+
+		props = new Properties();
+		props.load(KafkaConsumerApplication.class.getClassLoader().getResourceAsStream("consumer.properties"));
+
 
 		int nbThreads = 0;
 		int sleep = 1000;

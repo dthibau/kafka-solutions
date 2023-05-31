@@ -41,6 +41,8 @@ public class KafkaConsumerThread implements Runnable {
 
 	@Override
 	public void run() {
+
+		int count = 0;
 		try {
 			while (true) {
 				// poll envoie le heartbeat, on bloque pdt 100ms pour récupérer les messages
@@ -56,6 +58,9 @@ public class KafkaConsumerThread implements Runnable {
 //					Thread.sleep(sleep);
 
 				}
+
+				count += records.count();
+				System.out.println("A consommé " + count + " messages");
 			}
 		} finally {
 			consumer.close();
@@ -65,11 +70,14 @@ public class KafkaConsumerThread implements Runnable {
 
 	private void _initConsumer() {
 		Properties kafkaProps = new Properties();
-		kafkaProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092,localhost:19093");
-		kafkaProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
-		kafkaProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.formation.model.JsonDeserializer");
-		kafkaProps.put(ConsumerConfig.GROUP_ID_CONFIG, "position-consumer");
-		kafkaProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
+		kafkaProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConsumerApplication.props.get(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG));
+		kafkaProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, KafkaConsumerApplication.props.get(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG));
+		kafkaProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaConsumerApplication.props.get(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG));
+		kafkaProps.put(ConsumerConfig.GROUP_ID_CONFIG, KafkaConsumerApplication.props.get(ConsumerConfig.GROUP_ID_CONFIG));
+		kafkaProps.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
+		kafkaProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, KafkaConsumerApplication.props.get(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG));
+		kafkaProps.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed");
 
 		consumer = new KafkaConsumer<String, Courier>(kafkaProps);
 		consumer.subscribe(Collections.singletonList(TOPIC),new PartitionListener());
