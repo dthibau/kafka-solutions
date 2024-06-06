@@ -1,6 +1,7 @@
 package org.formation;
 
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -10,6 +11,8 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import org.formation.model.Coursier;
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import org.formation.model.Position;
+
+import javax.ws.rs.HEAD;
 
 
 public class KafkaProducerThread implements Runnable {
@@ -26,8 +29,8 @@ public class KafkaProducerThread implements Runnable {
 		this.nbMessages = nbMessages;
 		this.sleep = sleep;
 		this.sendMode = sendMode;
-		this.coursier = new Coursier(id, "David", new Position(Math.random() + 45, Math.random() + 2));
-
+		this.coursier = new Coursier(id, UUID.randomUUID().toString(), 1, new Position(Math.random() + 45, Math.random() + 2));
+		
 		_initProducer();
 		
 	}
