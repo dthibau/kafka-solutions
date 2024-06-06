@@ -10,6 +10,8 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import org.formation.model.Courier;
 import org.formation.model.Position;
 import org.formation.model.SendMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KafkaProducerThread implements Runnable {
 
@@ -20,7 +22,11 @@ public class KafkaProducerThread implements Runnable {
 	private ProducerCallback callback = new ProducerCallback();
 	
 	private Courier courier;
-	
+
+
+	private static final Logger logger = LoggerFactory.getLogger(KafkaProducerThread.class);
+
+
 	public KafkaProducerThread(String id, long nbMessages, long sleep, SendMode sendMode) {
 		this.nbMessages = nbMessages;
 		this.sleep = sleep;
@@ -65,20 +71,22 @@ public class KafkaProducerThread implements Runnable {
 				System.err.println("INTERRUPTED");
 			}
 		}
+		producer.flush();
+		producer.close();
 		
 	}
 	
 	public void fireAndForget(ProducerRecord<String,Courier> record) {
 		
 		producer.send(record);
-		System.out.println("FireAndForget  - " + record);
+		logger.debug("PRODUCER FireAndForget  - {}", record);
 
 		
 	}
 	
 	public void synchronous(ProducerRecord<String,Courier> record) throws InterruptedException, ExecutionException {
 		RecordMetadata metaData = producer.send(record).get();
-		System.out.println("Synchronous  - " + metaData);
+		logger.debug("PRODUCER Synchronous  - {}", metaData);
 		
 	}
 	public void asynchronous(ProducerRecord<String,Courier> record) {
@@ -91,8 +99,8 @@ public class KafkaProducerThread implements Runnable {
 		"localhost:19092,localhost:19093");
 		kafkaProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
 		"org.apache.kafka.common.serialization.StringSerializer");
-		kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-		"org.formation.model.JsonSerializer");
+		kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,"org.formation.model.JsonSerializer");
+
 
 		producer = new KafkaProducer<String, Courier>(kafkaProps);
 	}
