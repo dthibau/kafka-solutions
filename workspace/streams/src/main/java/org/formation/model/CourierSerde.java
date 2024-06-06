@@ -5,11 +5,11 @@ import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serializer;
 
 public class CourierSerde implements Serde<Courier> {
-	
-	Serializer<Courier> courierSerializer = new JsonSerializer();
-	Deserializer<Courier> courierDeserializer = new JsonDeserializer();
-	
-	
+
+	Serializer<Courier> courierSerializer = new CourierSerializer();
+	Deserializer<Courier> courierDeserializer = new CourierDeserializer();
+
+
 
 	@Override
 	public Serializer<Courier> serializer() {

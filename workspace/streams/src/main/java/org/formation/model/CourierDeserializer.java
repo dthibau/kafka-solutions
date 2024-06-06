@@ -5,7 +5,7 @@ import org.apache.kafka.common.serialization.Deserializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JsonDeserializer implements Deserializer<Courier>{
+public class CourierDeserializer implements Deserializer<Courier>{
 
 	private ObjectMapper objectMapper = new ObjectMapper();
     private Class<Courier> tClass = Courier.class;
