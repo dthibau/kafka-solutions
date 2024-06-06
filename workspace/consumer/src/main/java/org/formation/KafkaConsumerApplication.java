@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 public class KafkaConsumerApplication {
 
-	public static void main(String[] args) throws URISyntaxException {
+	public static void main(String[] args) throws URISyntaxException, ClassNotFoundException {
 
 		int nbThreads = 0;
 		int sleep = 1000;
