@@ -7,14 +7,12 @@ import java.util.concurrent.TimeUnit;
 
 public class KafkaConsumerApplication {
 
-	public static void main(String[] args) throws URISyntaxException {
+	public static void main(String[] args) throws URISyntaxException, ClassNotFoundException {
 
 		int nbThreads = 0;
-		int sleep = 1000;
 
 		try {
 			nbThreads = Integer.parseInt(args[0]);
-			sleep = Integer.parseInt(args[1]);
 		} catch (Exception e) {
 			System.err.println("Usage is <run> <nbThreads> <sleep>");
 			System.exit(1);
@@ -25,7 +23,7 @@ public class KafkaConsumerApplication {
 		long top = System.currentTimeMillis();
 
 		for (int i = 0; i < nbThreads; i++) {
-			Runnable r = new KafkaConsumerThread("" + i, sleep);
+			Runnable r = new KafkaConsumerThread("" + i);
 			executorService.execute(r);
 		}
 
