@@ -1,0 +1,16 @@
+async: true
+spring:
+  main:
+    web-application-type: none
+  kafka:
+    bootstrap-servers: localhost:19092
+
+    producer:
+      bootstrap-servers:
+      - localhost:19092
+      - localhost:19093
+      - localhost:19094
+      key-serializer:
+        org.apache.kafka.common.serialization.StringSerializer
+      value-serializer:
+        org.formation.model.JsonSerializer 

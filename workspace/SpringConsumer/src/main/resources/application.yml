@@ -1,0 +1,30 @@
+spring:
+  main:
+    web-application-type: none
+  datasource:
+    url: jdbc:postgresql:consumer
+    username: postgres
+    password: postgres
+  kafka:
+    consumer:
+      group-id: consumer
+      bootstrap-servers:
+      - localhost:19092
+      - localhost:19093
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.formation.model.JsonDeserializer
+        
+    listener:
+      concurrency: 3
+
+
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+#logging:
+#  file:
+#    name: consume.log
+#    path: .
