@@ -4,6 +4,12 @@ spring:
     web-application-type: none
   kafka:
     bootstrap-servers: localhost:19092
+    ssl:
+      trust-store-location: file:///home/dthibau/Formations/Kafka/github/kafka-solutions/ssl/mount/kafka.truststore.jks
+      trust-store-password: secret
+
+    security:
+      protocol: SSL
 
     producer:
       bootstrap-servers:
