@@ -9,7 +9,14 @@ spring:
       trust-store-password: secret
 
     security:
-      protocol: SSL
+      protocol: SASL_SSL
+    properties:
+      security.protocol: SASL_SSL
+      sasl.mechanism: PLAIN
+      sasl.jaas.config: >
+          org.apache.kafka.common.security.plain.PlainLoginModule required
+          username="alice"
+          password="alice-secret";
 
     producer:
       bootstrap-servers:
