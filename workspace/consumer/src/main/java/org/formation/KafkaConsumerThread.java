@@ -14,8 +14,12 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.formation.dao.ConsumerDao;
 import org.formation.model.Courier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KafkaConsumerThread implements Runnable {
+
+	private static final Logger logger = LoggerFactory.getLogger(KafkaConsumerThread.class);
 
 	public static String TOPIC = "position";
 	KafkaConsumer<String, Courier> consumer;
@@ -37,28 +41,24 @@ public class KafkaConsumerThread implements Runnable {
 
 	@Override
 	public void run() {
-		Map<String, Integer> updateMap = new HashMap<>();
 		try {
 			while (true) {
 				// poll envoie le heartbeat, on bloque pdt 100ms pour récupérer les messages
 				ConsumerRecords<String, Courier> records = consumer.poll(Duration.ofMillis(1000));
-				System.out.println("Consommer " + id + " fetch :" +records.count() + " messages");
+				logger.info("Consommer " + id + " fetch :" +records.count() + " messages");
 				for (ConsumerRecord<String, Courier> record : records) {
+					try {
+						consumerDao.insert(record.value().getId(), record.offset());
+					} catch (SQLException e) {
+						System.err.println("Erreur d'insertion dans la base de données : " + e.getMessage());
+					}
 
-					consumerDao.insert(record.value().getId(), record.offset());
-
-					Thread.sleep(sleep);
+//					Thread.sleep(sleep);
 
 				}
-				System.out.println("Consommer " + id + " updateMap:" + updateMap);
 			}
-		} catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
+		} finally {
 			consumer.close();
-
 		}
 
 	}
