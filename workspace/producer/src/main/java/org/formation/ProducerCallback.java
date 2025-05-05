@@ -11,7 +11,7 @@ public class ProducerCallback implements Callback {
 
 	@Override
 	public void onCompletion(RecordMetadata metadata, Exception exception) {
-		logger.info("ASynchronous  {}" , metadata);
+		logger.debug("ASynchronous  {}" , metadata);
 		
 	}
 

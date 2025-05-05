@@ -71,20 +71,22 @@ public class KafkaProducerThread implements Runnable {
 				System.err.println("INTERRUPTED");
 			}
 		}
+		producer.flush();
+		producer.close();
 		
 	}
 	
 	public void fireAndForget(ProducerRecord<String,Courier> record) {
 		
 		producer.send(record);
-		logger.info("PRODUCER FireAndForget  - {}", record);
+		logger.debug("PRODUCER FireAndForget  - {}", record);
 
 		
 	}
 	
 	public void synchronous(ProducerRecord<String,Courier> record) throws InterruptedException, ExecutionException {
 		RecordMetadata metaData = producer.send(record).get();
-		logger.info("PRODUCER Synchronous  - {}", metaData);
+		logger.debug("PRODUCER Synchronous  - {}", metaData);
 		
 	}
 	public void asynchronous(ProducerRecord<String,Courier> record) {
