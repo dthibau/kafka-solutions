@@ -6,7 +6,9 @@ import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.*;
+import org.apache.kafka.streams.kstream.Branched;
 import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.Named;
 import org.apache.kafka.streams.kstream.Produced;
 import org.formation.model.Courier;
 import org.formation.model.Position;
@@ -22,7 +24,7 @@ public class PositionStream {
     public static void main(String[] args) {
 
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-position-inverse-key");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-position-branch");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, SpecificAvroSerde.class);
@@ -37,7 +39,7 @@ public class PositionStream {
 
 // Création d’une topolgie de processeurs
         final StreamsBuilder builder = new StreamsBuilder();
-        builder.<String, Courier>stream("avro-position")
+        Map<String, KStream<Position, String>> branches = builder.<String, Courier>stream("avro-position")
                 .mapValues(coursier -> {
                     Position position = (Position)coursier.getPosition();
                     position.setLatitude((double)Math.round(position.getLatitude()));
@@ -46,7 +48,13 @@ public class PositionStream {
                 })
                 .selectKey((k, coursier) -> (Position)coursier.getPosition())
                 .mapValues(courier -> courier.getId().toString())
-                .to("avro-position-inverse-key", Produced.with(positionSerde, Serdes.String()));
+                .split(Named.as("Branch-"))
+                .branch((key, value) -> key.getLatitude() == 45,  /* first predicate  */
+                        Branched.as("South"))
+                .defaultBranch(Branched.as("North"));
+
+                branches.get("Branch-South").to("avro-position-south", Produced.with(positionSerde, Serdes.String()));
+                branches.get("Branch-North").to("avro-position-north", Produced.with(positionSerde, Serdes.String()));
 
         final Topology topology = builder.build();
 
