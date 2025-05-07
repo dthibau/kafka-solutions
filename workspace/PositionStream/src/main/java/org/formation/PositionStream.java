@@ -6,24 +6,34 @@ import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.*;
+import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.Produced;
 import org.formation.model.Courier;
 import org.formation.model.Position;
 
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
 public class PositionStream {
+    public static String REGISTRY_URL = "http://localhost:8081";
 
     public static void main(String[] args) {
 
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-position");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-position-inverse-key");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, SpecificAvroSerde.class);
-        props.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
+        props.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, REGISTRY_URL);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
+        Map<String, Object> config = new HashMap<>();
+        config.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, REGISTRY_URL); // URL
+
+        SpecificAvroSerde<Position> positionSerde = new SpecificAvroSerde<>();
+        positionSerde.configure(config, true);
 
 // Création d’une topolgie de processeurs
         final StreamsBuilder builder = new StreamsBuilder();
@@ -34,7 +44,9 @@ public class PositionStream {
                     position.setLongitude((double)Math.round(position.getLongitude()));
                     return coursier;
                 })
-                .to("avro-position-rounded");
+                .selectKey((k, coursier) -> (Position)coursier.getPosition())
+                .mapValues(courier -> courier.getId().toString())
+                .to("avro-position-inverse-key", Produced.with(positionSerde, Serdes.String()));
 
         final Topology topology = builder.build();
 
