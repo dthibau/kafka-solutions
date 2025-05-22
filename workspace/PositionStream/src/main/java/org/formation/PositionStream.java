@@ -6,10 +6,7 @@ import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.*;
-import org.apache.kafka.streams.kstream.Branched;
-import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.Named;
-import org.apache.kafka.streams.kstream.Produced;
+import org.apache.kafka.streams.kstream.*;
 import org.formation.model.Courier;
 import org.formation.model.Position;
 
@@ -24,7 +21,7 @@ public class PositionStream {
     public static void main(String[] args) {
 
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-position-branch");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-position-count");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, SpecificAvroSerde.class);
@@ -36,6 +33,9 @@ public class PositionStream {
 
         SpecificAvroSerde<Position> positionSerde = new SpecificAvroSerde<>();
         positionSerde.configure(config, true);
+
+        SpecificAvroSerde<Courier> coursierSerde = new SpecificAvroSerde<>();
+        coursierSerde.configure(config, true);
 
 // Création d’une topolgie de processeurs
         final StreamsBuilder builder = new StreamsBuilder();
@@ -53,8 +53,8 @@ public class PositionStream {
                         Branched.as("South"))
                 .defaultBranch(Branched.as("North"));
 
-                branches.get("Branch-South").to("avro-position-south", Produced.with(positionSerde, Serdes.String()));
-                branches.get("Branch-North").to("avro-position-north", Produced.with(positionSerde, Serdes.String()));
+                branches.get("Branch-South").groupByKey(Grouped.with(positionSerde, Serdes.String())).count(Materialized.with(positionSerde, Serdes.Long())).toStream().mapValues(value -> value.toString()).to("count-avro-position-south", Produced.with(positionSerde, Serdes.String()));
+                branches.get("Branch-North").groupByKey(Grouped.with(positionSerde, Serdes.String())).count(Materialized.with(positionSerde, Serdes.Long())).toStream().mapValues(value -> value.toString()).to("count-avro-position-north", Produced.with(positionSerde, Serdes.String()));
 
         final Topology topology = builder.build();
 
