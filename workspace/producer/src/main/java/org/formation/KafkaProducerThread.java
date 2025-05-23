@@ -117,9 +117,11 @@ public class KafkaProducerThread implements Runnable {
 		kafkaProps.put(ProducerConfig.RETRIES_CONFIG,Integer.MAX_VALUE);
 		kafkaProps.put(ProducerConfig.ACKS_CONFIG,"all");
 		kafkaProps.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, KafkaProducerApplication.props.get(ProducerConfig.TRANSACTIONAL_ID_CONFIG) + courier.getId());
-		kafkaProps.put("security.protocol","SSL");
+		kafkaProps.put("security.protocol","SASL_SSL");
+		kafkaProps.put("sasl.mechanism","PLAIN");
 		kafkaProps.put("ssl.truststore.location", "/home/dthibau/Formations/Kafka/github/slides/TPs/9_securite/9.1_SSL/ssl/mount/kafka.truststore.jks");
 		kafkaProps.put("ssl.truststore.password","secret");
+		kafkaProps.put("sasl.jaas.config","org.apache.kafka.common.security.plain.PlainLoginModule required username=\"alice\" password=\"alice-secret\";");
 
 		producer = new KafkaProducer<String, Courier>(kafkaProps);
 	}
