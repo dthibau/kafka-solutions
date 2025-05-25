@@ -13,8 +13,8 @@ import org.apache.avro.message.SchemaStore;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class Coursier extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 5993637386410299991L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Coursier\",\"namespace\":\"org.formation.model\",\"fields\":[{\"name\":\"id\",\"type\":\"long\"},{\"name\":\"firstName\",\"type\":[\"string\",\"null\"],\"default\":\"null\"},{\"name\":\"vehicle_id\",\"type\":\"int\"},{\"name\":\"position\",\"type\":[{\"type\":\"record\",\"name\":\"Position\",\"fields\":[{\"name\":\"latitude\",\"type\":\"double\"},{\"name\":\"longitude\",\"type\":\"double\"}]}]}]}");
+  private static final long serialVersionUID = 9028626205824793769L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Coursier\",\"namespace\":\"org.formation.model\",\"fields\":[{\"name\":\"id\",\"type\":\"long\"},{\"name\":\"firstName\",\"type\":[\"string\",\"null\"],\"default\":\"null\"},{\"name\":\"position\",\"type\":[{\"type\":\"record\",\"name\":\"Position\",\"fields\":[{\"name\":\"latitude\",\"type\":\"double\"},{\"name\":\"longitude\",\"type\":\"double\"}]}]}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -53,7 +53,6 @@ public class Coursier extends org.apache.avro.specific.SpecificRecordBase implem
 
   @Deprecated public long id;
   @Deprecated public java.lang.CharSequence firstName;
-  @Deprecated public int vehicle_id;
   @Deprecated public java.lang.Object position;
 
   /**
@@ -67,13 +66,11 @@ public class Coursier extends org.apache.avro.specific.SpecificRecordBase implem
    * All-args constructor.
    * @param id The new value for id
    * @param firstName The new value for firstName
-   * @param vehicle_id The new value for vehicle_id
    * @param position The new value for position
    */
-  public Coursier(java.lang.Long id, java.lang.CharSequence firstName, java.lang.Integer vehicle_id, java.lang.Object position) {
+  public Coursier(java.lang.Long id, java.lang.CharSequence firstName, java.lang.Object position) {
     this.id = id;
     this.firstName = firstName;
-    this.vehicle_id = vehicle_id;
     this.position = position;
   }
 
@@ -83,8 +80,7 @@ public class Coursier extends org.apache.avro.specific.SpecificRecordBase implem
     switch (field$) {
     case 0: return id;
     case 1: return firstName;
-    case 2: return vehicle_id;
-    case 3: return position;
+    case 2: return position;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -95,8 +91,7 @@ public class Coursier extends org.apache.avro.specific.SpecificRecordBase implem
     switch (field$) {
     case 0: id = (java.lang.Long)value$; break;
     case 1: firstName = (java.lang.CharSequence)value$; break;
-    case 2: vehicle_id = (java.lang.Integer)value$; break;
-    case 3: position = (java.lang.Object)value$; break;
+    case 2: position = (java.lang.Object)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -131,22 +126,6 @@ public class Coursier extends org.apache.avro.specific.SpecificRecordBase implem
    */
   public void setFirstName(java.lang.CharSequence value) {
     this.firstName = value;
-  }
-
-  /**
-   * Gets the value of the 'vehicle_id' field.
-   * @return The value of the 'vehicle_id' field.
-   */
-  public java.lang.Integer getVehicleId() {
-    return vehicle_id;
-  }
-
-  /**
-   * Sets the value of the 'vehicle_id' field.
-   * @param value the value to set.
-   */
-  public void setVehicleId(java.lang.Integer value) {
-    this.vehicle_id = value;
   }
 
   /**
@@ -199,7 +178,6 @@ public class Coursier extends org.apache.avro.specific.SpecificRecordBase implem
 
     private long id;
     private java.lang.CharSequence firstName;
-    private int vehicle_id;
     private java.lang.Object position;
 
     /** Creates a new Builder */
@@ -221,13 +199,9 @@ public class Coursier extends org.apache.avro.specific.SpecificRecordBase implem
         this.firstName = data().deepCopy(fields()[1].schema(), other.firstName);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.vehicle_id)) {
-        this.vehicle_id = data().deepCopy(fields()[2].schema(), other.vehicle_id);
+      if (isValidValue(fields()[2], other.position)) {
+        this.position = data().deepCopy(fields()[2].schema(), other.position);
         fieldSetFlags()[2] = true;
-      }
-      if (isValidValue(fields()[3], other.position)) {
-        this.position = data().deepCopy(fields()[3].schema(), other.position);
-        fieldSetFlags()[3] = true;
       }
     }
 
@@ -245,13 +219,9 @@ public class Coursier extends org.apache.avro.specific.SpecificRecordBase implem
         this.firstName = data().deepCopy(fields()[1].schema(), other.firstName);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.vehicle_id)) {
-        this.vehicle_id = data().deepCopy(fields()[2].schema(), other.vehicle_id);
+      if (isValidValue(fields()[2], other.position)) {
+        this.position = data().deepCopy(fields()[2].schema(), other.position);
         fieldSetFlags()[2] = true;
-      }
-      if (isValidValue(fields()[3], other.position)) {
-        this.position = data().deepCopy(fields()[3].schema(), other.position);
-        fieldSetFlags()[3] = true;
       }
     }
 
@@ -333,44 +303,6 @@ public class Coursier extends org.apache.avro.specific.SpecificRecordBase implem
     }
 
     /**
-      * Gets the value of the 'vehicle_id' field.
-      * @return The value.
-      */
-    public java.lang.Integer getVehicleId() {
-      return vehicle_id;
-    }
-
-    /**
-      * Sets the value of the 'vehicle_id' field.
-      * @param value The value of 'vehicle_id'.
-      * @return This builder.
-      */
-    public org.formation.model.Coursier.Builder setVehicleId(int value) {
-      validate(fields()[2], value);
-      this.vehicle_id = value;
-      fieldSetFlags()[2] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'vehicle_id' field has been set.
-      * @return True if the 'vehicle_id' field has been set, false otherwise.
-      */
-    public boolean hasVehicleId() {
-      return fieldSetFlags()[2];
-    }
-
-
-    /**
-      * Clears the value of the 'vehicle_id' field.
-      * @return This builder.
-      */
-    public org.formation.model.Coursier.Builder clearVehicleId() {
-      fieldSetFlags()[2] = false;
-      return this;
-    }
-
-    /**
       * Gets the value of the 'position' field.
       * @return The value.
       */
@@ -384,9 +316,9 @@ public class Coursier extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public org.formation.model.Coursier.Builder setPosition(java.lang.Object value) {
-      validate(fields()[3], value);
+      validate(fields()[2], value);
       this.position = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -395,7 +327,7 @@ public class Coursier extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'position' field has been set, false otherwise.
       */
     public boolean hasPosition() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[2];
     }
 
 
@@ -405,7 +337,7 @@ public class Coursier extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public org.formation.model.Coursier.Builder clearPosition() {
       position = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -416,8 +348,7 @@ public class Coursier extends org.apache.avro.specific.SpecificRecordBase implem
         Coursier record = new Coursier();
         record.id = fieldSetFlags()[0] ? this.id : (java.lang.Long) defaultValue(fields()[0]);
         record.firstName = fieldSetFlags()[1] ? this.firstName : (java.lang.CharSequence) defaultValue(fields()[1]);
-        record.vehicle_id = fieldSetFlags()[2] ? this.vehicle_id : (java.lang.Integer) defaultValue(fields()[2]);
-        record.position = fieldSetFlags()[3] ? this.position : (java.lang.Object) defaultValue(fields()[3]);
+        record.position = fieldSetFlags()[2] ? this.position : (java.lang.Object) defaultValue(fields()[2]);
         return record;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

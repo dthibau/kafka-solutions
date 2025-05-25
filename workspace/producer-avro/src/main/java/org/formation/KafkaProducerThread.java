@@ -29,7 +29,7 @@ public class KafkaProducerThread implements Runnable {
 		this.nbMessages = nbMessages;
 		this.sleep = sleep;
 		this.sendMode = sendMode;
-		this.coursier = new Coursier(id, UUID.randomUUID().toString(), 1, new Position(Math.random() + 45, Math.random() + 2));
+		this.coursier = new Coursier(id, UUID.randomUUID().toString(), new Position(Math.random() + 45, Math.random() + 2));
 		
 		_initProducer();
 		

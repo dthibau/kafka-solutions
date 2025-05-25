@@ -13,10 +13,6 @@
         "default": "null" 
     },
     {
-       		"name": "vehicle_id",
-       		"type": "int"
-    },
-    {
     	"name": "position",
     	"type": [
     		{
