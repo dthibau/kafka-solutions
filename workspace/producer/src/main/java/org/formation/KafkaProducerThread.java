@@ -41,8 +41,9 @@ public class KafkaProducerThread implements Runnable {
 	public void run() {
 		
 		for (int i =0; i< nbMessages; i++) {
-			
+			courier.move();
 			ProducerRecord<String, Courier> producerRecord = new ProducerRecord<String, Courier>(TOPIC, courier.getId(), courier);
+
 			switch (sendMode) {
 			case FIRE_AND_FORGET:
 				fireAndForget(producerRecord);
