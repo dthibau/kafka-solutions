@@ -12,23 +12,23 @@ import org.apache.avro.message.SchemaStore;
 
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
-public class Courier extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 4863131900608571758L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Courier\",\"namespace\":\"org.formation.model\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"position\",\"type\":[{\"type\":\"record\",\"name\":\"Position\",\"fields\":[{\"name\":\"latitude\",\"type\":\"double\"},{\"name\":\"longitude\",\"type\":\"double\"}]}]}]}");
+public class Coursier extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
+  private static final long serialVersionUID = -2779783620474837994L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Coursier\",\"namespace\":\"org.formation.model\",\"fields\":[{\"name\":\"id\",\"type\":\"long\"},{\"name\":\"position\",\"type\":[{\"type\":\"record\",\"name\":\"Position\",\"fields\":[{\"name\":\"latitude\",\"type\":\"double\"},{\"name\":\"longitude\",\"type\":\"double\"}]}]}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
 
-  private static final BinaryMessageEncoder<Courier> ENCODER =
-      new BinaryMessageEncoder<Courier>(MODEL$, SCHEMA$);
+  private static final BinaryMessageEncoder<Coursier> ENCODER =
+      new BinaryMessageEncoder<Coursier>(MODEL$, SCHEMA$);
 
-  private static final BinaryMessageDecoder<Courier> DECODER =
-      new BinaryMessageDecoder<Courier>(MODEL$, SCHEMA$);
+  private static final BinaryMessageDecoder<Coursier> DECODER =
+      new BinaryMessageDecoder<Coursier>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageDecoder instance used by this class.
    */
-  public static BinaryMessageDecoder<Courier> getDecoder() {
+  public static BinaryMessageDecoder<Coursier> getDecoder() {
     return DECODER;
   }
 
@@ -36,22 +36,22 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
    */
-  public static BinaryMessageDecoder<Courier> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<Courier>(MODEL$, SCHEMA$, resolver);
+  public static BinaryMessageDecoder<Coursier> createDecoder(SchemaStore resolver) {
+    return new BinaryMessageDecoder<Coursier>(MODEL$, SCHEMA$, resolver);
   }
 
-  /** Serializes this Courier to a ByteBuffer. */
+  /** Serializes this Coursier to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /** Deserializes a Courier from a ByteBuffer. */
-  public static Courier fromByteBuffer(
+  /** Deserializes a Coursier from a ByteBuffer. */
+  public static Coursier fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
-  @Deprecated public java.lang.CharSequence id;
+  @Deprecated public long id;
   @Deprecated public java.lang.Object position;
 
   /**
@@ -59,14 +59,14 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
    * to their default values from the schema.  If that is desired then
    * one should use <code>newBuilder()</code>.
    */
-  public Courier() {}
+  public Coursier() {}
 
   /**
    * All-args constructor.
    * @param id The new value for id
    * @param position The new value for position
    */
-  public Courier(java.lang.CharSequence id, java.lang.Object position) {
+  public Coursier(java.lang.Long id, java.lang.Object position) {
     this.id = id;
     this.position = position;
   }
@@ -85,7 +85,7 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: id = (java.lang.CharSequence)value$; break;
+    case 0: id = (java.lang.Long)value$; break;
     case 1: position = (java.lang.Object)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
@@ -95,7 +95,7 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
    * Gets the value of the 'id' field.
    * @return The value of the 'id' field.
    */
-  public java.lang.CharSequence getId() {
+  public java.lang.Long getId() {
     return id;
   }
 
@@ -103,7 +103,7 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
    * Sets the value of the 'id' field.
    * @param value the value to set.
    */
-  public void setId(java.lang.CharSequence value) {
+  public void setId(java.lang.Long value) {
     this.id = value;
   }
 
@@ -124,38 +124,38 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
   }
 
   /**
-   * Creates a new Courier RecordBuilder.
-   * @return A new Courier RecordBuilder
+   * Creates a new Coursier RecordBuilder.
+   * @return A new Coursier RecordBuilder
    */
-  public static org.formation.model.Courier.Builder newBuilder() {
-    return new org.formation.model.Courier.Builder();
+  public static org.formation.model.Coursier.Builder newBuilder() {
+    return new org.formation.model.Coursier.Builder();
   }
 
   /**
-   * Creates a new Courier RecordBuilder by copying an existing Builder.
+   * Creates a new Coursier RecordBuilder by copying an existing Builder.
    * @param other The existing builder to copy.
-   * @return A new Courier RecordBuilder
+   * @return A new Coursier RecordBuilder
    */
-  public static org.formation.model.Courier.Builder newBuilder(org.formation.model.Courier.Builder other) {
-    return new org.formation.model.Courier.Builder(other);
+  public static org.formation.model.Coursier.Builder newBuilder(org.formation.model.Coursier.Builder other) {
+    return new org.formation.model.Coursier.Builder(other);
   }
 
   /**
-   * Creates a new Courier RecordBuilder by copying an existing Courier instance.
+   * Creates a new Coursier RecordBuilder by copying an existing Coursier instance.
    * @param other The existing instance to copy.
-   * @return A new Courier RecordBuilder
+   * @return A new Coursier RecordBuilder
    */
-  public static org.formation.model.Courier.Builder newBuilder(org.formation.model.Courier other) {
-    return new org.formation.model.Courier.Builder(other);
+  public static org.formation.model.Coursier.Builder newBuilder(org.formation.model.Coursier other) {
+    return new org.formation.model.Coursier.Builder(other);
   }
 
   /**
-   * RecordBuilder for Courier instances.
+   * RecordBuilder for Coursier instances.
    */
-  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<Courier>
-    implements org.apache.avro.data.RecordBuilder<Courier> {
+  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<Coursier>
+    implements org.apache.avro.data.RecordBuilder<Coursier> {
 
-    private java.lang.CharSequence id;
+    private long id;
     private java.lang.Object position;
 
     /** Creates a new Builder */
@@ -167,7 +167,7 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(org.formation.model.Courier.Builder other) {
+    private Builder(org.formation.model.Coursier.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.id)) {
         this.id = data().deepCopy(fields()[0].schema(), other.id);
@@ -180,10 +180,10 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
     }
 
     /**
-     * Creates a Builder by copying an existing Courier instance
+     * Creates a Builder by copying an existing Coursier instance
      * @param other The existing instance to copy.
      */
-    private Builder(org.formation.model.Courier other) {
+    private Builder(org.formation.model.Coursier other) {
             super(SCHEMA$);
       if (isValidValue(fields()[0], other.id)) {
         this.id = data().deepCopy(fields()[0].schema(), other.id);
@@ -199,7 +199,7 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
       * Gets the value of the 'id' field.
       * @return The value.
       */
-    public java.lang.CharSequence getId() {
+    public java.lang.Long getId() {
       return id;
     }
 
@@ -208,7 +208,7 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
       * @param value The value of 'id'.
       * @return This builder.
       */
-    public org.formation.model.Courier.Builder setId(java.lang.CharSequence value) {
+    public org.formation.model.Coursier.Builder setId(long value) {
       validate(fields()[0], value);
       this.id = value;
       fieldSetFlags()[0] = true;
@@ -228,8 +228,7 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
       * Clears the value of the 'id' field.
       * @return This builder.
       */
-    public org.formation.model.Courier.Builder clearId() {
-      id = null;
+    public org.formation.model.Coursier.Builder clearId() {
       fieldSetFlags()[0] = false;
       return this;
     }
@@ -247,7 +246,7 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
       * @param value The value of 'position'.
       * @return This builder.
       */
-    public org.formation.model.Courier.Builder setPosition(java.lang.Object value) {
+    public org.formation.model.Coursier.Builder setPosition(java.lang.Object value) {
       validate(fields()[1], value);
       this.position = value;
       fieldSetFlags()[1] = true;
@@ -267,7 +266,7 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
       * Clears the value of the 'position' field.
       * @return This builder.
       */
-    public org.formation.model.Courier.Builder clearPosition() {
+    public org.formation.model.Coursier.Builder clearPosition() {
       position = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -275,10 +274,10 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
 
     @Override
     @SuppressWarnings("unchecked")
-    public Courier build() {
+    public Coursier build() {
       try {
-        Courier record = new Courier();
-        record.id = fieldSetFlags()[0] ? this.id : (java.lang.CharSequence) defaultValue(fields()[0]);
+        Coursier record = new Coursier();
+        record.id = fieldSetFlags()[0] ? this.id : (java.lang.Long) defaultValue(fields()[0]);
         record.position = fieldSetFlags()[1] ? this.position : (java.lang.Object) defaultValue(fields()[1]);
         return record;
       } catch (java.lang.Exception e) {
@@ -288,8 +287,8 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumWriter<Courier>
-    WRITER$ = (org.apache.avro.io.DatumWriter<Courier>)MODEL$.createDatumWriter(SCHEMA$);
+  private static final org.apache.avro.io.DatumWriter<Coursier>
+    WRITER$ = (org.apache.avro.io.DatumWriter<Coursier>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
@@ -297,8 +296,8 @@ public class Courier extends org.apache.avro.specific.SpecificRecordBase impleme
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumReader<Courier>
-    READER$ = (org.apache.avro.io.DatumReader<Courier>)MODEL$.createDatumReader(SCHEMA$);
+  private static final org.apache.avro.io.DatumReader<Coursier>
+    READER$ = (org.apache.avro.io.DatumReader<Coursier>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {

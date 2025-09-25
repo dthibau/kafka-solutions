@@ -7,27 +7,26 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
-import org.formation.model.Courier;
-import org.formation.model.Position;
 
-import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
+import org.formation.model.Coursier;
+import org.formation.model.Position;
 
 public class KafkaProducerThread implements Runnable {
 
 	public static String TOPIC ="position";
-	KafkaProducer<String,Courier> producer;
+	KafkaProducer<String, Coursier> producer;
 	private long nbMessages,sleep;
 	private SendMode sendMode;
 	private ProducerCallback callback = new ProducerCallback();
 	
-	private Courier courier;
+	private Coursier coursier;
 	
-	public KafkaProducerThread(String id, long nbMessages, long sleep, SendMode sendMode) {
+	public KafkaProducerThread(Long id, long nbMessages, long sleep, SendMode sendMode) {
 		this.nbMessages = nbMessages;
 		this.sleep = sleep;
 		this.sendMode = sendMode;
-		this.courier = new Courier(id, new Position(Math.random() + 45, Math.random() + 2));
+		this.coursier = new Coursier(id, new Position(Math.random() + 45, Math.random() + 2));
 		
 		_initProducer();
 		
@@ -37,8 +36,8 @@ public class KafkaProducerThread implements Runnable {
 	public void run() {
 		
 		for (int i =0; i< nbMessages; i++) {
-			_moveCoursier(courier);
-			ProducerRecord<String, Courier> producerRecord = new ProducerRecord<String, Courier>(KafkaProducerApplication.TOPIC, courier.getId()+"", courier);
+			_moveCoursier(coursier);
+			ProducerRecord<String, Coursier> producerRecord = new ProducerRecord<String, Coursier>(KafkaProducerApplication.TOPIC, coursier.getId()+"", coursier);
 			switch (sendMode) {
 			case FIRE_AND_FORGET:
 				fireAndForget(producerRecord);
@@ -72,7 +71,7 @@ public class KafkaProducerThread implements Runnable {
 		
 	}
 	
-	public void fireAndForget(ProducerRecord<String,Courier> record) {
+	public void fireAndForget(ProducerRecord<String,Coursier> record) {
 		
 		producer.send(record);
 		System.out.println("FireAndForget  - " + record);
@@ -80,12 +79,12 @@ public class KafkaProducerThread implements Runnable {
 		
 	}
 	
-	public void synchronous(ProducerRecord<String,Courier> record) throws InterruptedException, ExecutionException {
+	public void synchronous(ProducerRecord<String,Coursier> record) throws InterruptedException, ExecutionException {
 		RecordMetadata metaData = producer.send(record).get();
 		System.out.println("Synchronous  - " + metaData);
 		
 	}
-	public void asynchronous(ProducerRecord<String,Courier> record) {
+	public void asynchronous(ProducerRecord<String,Coursier> record) {
 		producer.send(record,callback);
 	}
 	
@@ -100,10 +99,10 @@ public class KafkaProducerThread implements Runnable {
 		"io.confluent.kafka.serializers.KafkaAvroSerializer");
 
 		
-		producer = new KafkaProducer<String, Courier>(kafkaProps);
+		producer = new KafkaProducer<String, Coursier>(kafkaProps);
 	}
 
-	private void _moveCoursier(Courier coursier) {
+	private void _moveCoursier(Coursier coursier) {
 		Position position = (Position)coursier.getPosition();
 		position.setLatitude(position.getLatitude() + Math.random()-0.5);
 		position.setLongitude(position.getLongitude() + Math.random()-0.5);

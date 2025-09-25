@@ -1,11 +1,11 @@
 {
     "type": "record",
-    "name": "Courier",
+    "name": "Coursier",
     "namespace": "org.formation.model",
     "fields": [
     {
         "name": "id",
-        "type": "string"
+        "type": "long"
     },
     {
     	"name": "position",

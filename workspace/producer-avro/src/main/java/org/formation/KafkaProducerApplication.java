@@ -48,7 +48,7 @@ public class KafkaProducerApplication {
 		long top = System.currentTimeMillis();
 
 		for (int i = 0; i < nbThreads; i++) {
-			Runnable r = new KafkaProducerThread("" + i, nbMessages, sleep, sendMode);
+			Runnable r = new KafkaProducerThread( Long.valueOf(i), nbMessages, sleep, sendMode);
 			executorService.execute(r);
 		}
 
@@ -67,7 +67,7 @@ public class KafkaProducerApplication {
 	private static void _initRegistry() throws IOException, RestClientException {
 
 		// avro schema avsc file path.
-		String schemaPath = "/Courier.avsc";
+		String schemaPath = "/Coursier.avsc";
 		// subject convention is "<topic-name>-value"
 		String subject = TOPIC + "-value";
 		// avsc json string.
