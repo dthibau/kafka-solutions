@@ -3,10 +3,13 @@ package org.formation;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.common.config.SaslConfigs;
+import org.apache.kafka.common.config.SslConfigs;
 import org.formation.model.Courier;
 import org.formation.model.Position;
 import org.formation.model.SendMode;
@@ -117,11 +120,11 @@ public class KafkaProducerThread implements Runnable {
 		kafkaProps.put(ProducerConfig.RETRIES_CONFIG,Integer.MAX_VALUE);
 		kafkaProps.put(ProducerConfig.ACKS_CONFIG,"all");
 		kafkaProps.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, KafkaProducerApplication.props.get(ProducerConfig.TRANSACTIONAL_ID_CONFIG) + courier.getId());
-		kafkaProps.put("security.protocol","SASL_SSL");
-		kafkaProps.put("sasl.mechanism","PLAIN");
-		kafkaProps.put("ssl.truststore.location", "/home/dthibau/Formations/Kafka/github/slides/TPs/9_securite/9.1_SSL/ssl/mount/kafka.truststore.jks");
-		kafkaProps.put("ssl.truststore.password","secret");
-		kafkaProps.put("sasl.jaas.config","org.apache.kafka.common.security.plain.PlainLoginModule required username=\"alice\" password=\"alice-secret\";");
+		kafkaProps.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG,"SASL_SSL");
+		kafkaProps.put(SaslConfigs.SASL_MECHANISM,"PLAIN");
+		kafkaProps.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/home/dthibau/Formations/Kafka/github/slides/TPs/9_securite/9.1_SSL/ssl/mount/kafka.truststore.jks");
+		kafkaProps.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG,"secret");
+		kafkaProps.put(SaslConfigs.SASL_JAAS_CONFIG,"org.apache.kafka.common.security.plain.PlainLoginModule required username=\"alice\" password=\"alice-secret\";");
 
 		producer = new KafkaProducer<String, Courier>(kafkaProps);
 	}
