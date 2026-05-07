@@ -6,3 +6,5 @@ export KAFKA_OPTS="-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=http://local
 $KAFKA_HOME/bin/kafka-server-start.sh -daemon config/server1.properties 
 $KAFKA_HOME/bin/kafka-server-start.sh -daemon config/server2.properties 
 $KAFKA_HOME/bin/kafka-server-start.sh -daemon config/server3.properties
+$KAFKA_HOME/bin/kafka-server-start.sh -daemon config/server4.properties
+
